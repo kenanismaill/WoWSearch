@@ -1,0 +1,7 @@
+{
+  "name": "WoWSearch",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
