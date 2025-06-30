@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">WoWSearch</string>
+    <string name="title_activity_main">WoWSearch</string>
+    <string name="package_name">com.wowSearch.app</string>
+    <string name="custom_url_scheme">com.wowSearch.app</string>
+</resources>

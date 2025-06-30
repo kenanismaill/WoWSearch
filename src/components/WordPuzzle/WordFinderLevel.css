@@ -1,0 +1,140 @@
+.finder-level-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.finder-level-background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.7;
+}
+
+.finder-level-grid {
+    position: absolute;
+    top: 100px;
+    bottom: 80px;
+    left: 20px;
+    right: 20px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow-y: scroll;
+}
+
+.finder-level-item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 16px;
+    background: rgba(43, 43, 43, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    opacity: 0;
+    transform: translateY(49px) scale(0.8);
+    animation: fadeIn 0.3s ease-in forwards;
+    will-change: transform, opacity;
+    cursor: pointer;
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.finder-level-item:disabled {
+    cursor: not-allowed;
+}
+
+.finder-level-item:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.finder-level-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 60%;
+    transform: translate(-50%, -50%);
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+}
+
+.finder-level-badge {
+    position: absolute;
+    bottom: -8px;
+    right: -5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    background: #ef5350;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.finder-level-badge.unlocked {
+    background: #66bb6a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.finder-level-number {
+    top: 50%;
+    left: 50%;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Arial Rounded MT Bold', system-ui;
+    position: static;
+    transform: none;
+    font-size: 12px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(49px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.finder-level-grid::-webkit-scrollbar {
+    width: 8px;
+    display: none;
+}
+
+.finder-level-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.finder-level-grid::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .finder-level-item {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    .finder-level-grid {
+        scroll-behavior: auto;
+    }
+}

@@ -1,0 +1,429 @@
+/* Header Styles */
+.word-finder-header {
+    position: fixed;
+    top: 1%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 70px;
+    z-index: 1000;
+}
+
+.word-finder-header-left,
+.word-finder-header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.word-finder-header-icon {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    border-radius: 50%;
+    box-shadow: 0 2px rgba(255, 250, 232, 0.35);
+}
+
+.word-finder-header-center {
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, -50%);
+}
+
+.word-finder-level-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #2c3e50;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.word-finder-coin-container {
+    display: flex;
+    align-items: center;
+    background: #4a5568;
+    border-radius: 20px;
+    height: 30px;
+    gap: 8px;
+    width: 80px;
+}
+
+.word-finder-coin-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.word-finder-coin-count {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* Main Container Styles */
+.word-finder-container {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5f7fa;
+    overflow: hidden;
+    position: relative;
+}
+
+.word-finder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 35px;
+    width: 100%;
+    padding: 80px 12px 20px;
+    overflow-y: auto;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
+/* Word List Styles */
+.word-finder-words {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 10px;
+    border-radius: 16px;
+    background: rgba(255, 250, 232, 0.5);
+    width: 95%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-top: 10px;
+}
+
+.word-finder-word {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #2c3e50;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    cursor: default;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.word-finder-word.word-found {
+    background: linear-gradient(145deg, #2ecc71, #27ae60);
+    color: white;
+    animation: wordPop 0.4s ease;
+}
+
+/* Selected Letters Display */
+.selected-letters {
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(145deg, #ff9a3d, #ff6b6b);
+    color: white;
+    border-radius: 25px;
+    padding: 0 22px;
+    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    min-width: 50px;
+}
+
+/* Game Grid Styles */
+.word-finder-grid {
+    width: 95vw;
+    height: 95vw;
+    max-width: 350px;
+    max-height: 350px;
+    border-radius: 20px;
+    overflow: hidden;
+    touch-action: none;
+    position: relative;
+    background: rgba(255, 250, 232, 0.7);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.word-finder-row {
+    display: flex;
+    height: calc(100% / var(--grid-size)) !important;
+}
+
+.word-finder-cell {
+    width: calc(100% / var(--grid-size));
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    user-select: none;
+    transition: all 0.15s ease;
+    position: relative;
+    overflow: hidden;
+    transform-origin: center;
+    color: #2c3e50;
+}
+
+.cell-letter {
+    position: relative;
+    z-index: 10;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.word-finder-path {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.active-path,
+.completed-path {
+    stroke-width: 38;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+
+.active-path {
+    stroke-opacity: 1;
+    transition: stroke 0.3s ease;
+    filter: drop-shadow(0 0 3px currentColor);
+}
+
+.completed-path {
+    stroke-opacity: 0.7;
+    animation: drawPath 0.8s ease-out forwards;
+}
+
+/* Footer Controls */
+.word-finder-footer {
+    z-index: 1000;
+}
+
+.word-finder-footer-icons-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 0 15px;
+    width: 100%;
+}
+
+.word-finder-footer-item {
+    position: relative; /* Essential for absolute positioning of badge */
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #5e72e4, #825ee4);
+    box-shadow: 1px 4px 0 rgba(0, 0, 71, 0.8);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.tries-badge {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10; /* Ensure it appears above everything */
+}
+
+.word-finder-footer-icon {
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+}
+
+/* Animation Styles */
+.celebration-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.word-reveal-animation {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 8px;
+    font-size: 2rem;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+}
+
+.word-reveal-letter {
+    animation: wordReveal 0.8s ease-in-out;
+    display: inline-block;
+    color: #2c3e50;
+}
+
+.first-letter-circle {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+    opacity: 0.35;
+    z-index: 0;
+    pointer-events: none;
+    animation: throwColor 1.5s ease-in-out forwards;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.cell-letter-remove {
+    animation: letterRemove 0.8s ease-out forwards;
+}
+
+/* Ad Popup */
+.ad-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+
+.ad-popup {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    max-width: 300px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.ad-popup h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.ad-popup p {
+    margin-bottom: 25px;
+    color: #4a5568;
+}
+
+.ad-popup-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.ad-popup-button {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.ad-popup-button.cancel {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.ad-popup-button.confirm {
+    background: linear-gradient(145deg, #ff9a3d, #ff6b6b);
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+}
+
+.ad-popup-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Keyframe Animations */
+@keyframes wordPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes drawPath {
+    from { stroke-dashoffset: 1000; }
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes wordReveal {
+    0% { transform: rotateX(0deg); }
+    50% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+@keyframes letterRemove {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+        opacity: 0;
+        transform: translate(-40px, -80px) rotate(30deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-100px, -100px) rotate(30deg);
+    }
+}
+
+@keyframes throwColor {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    40% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+}
