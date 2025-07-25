@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "Hospital",
+    "image": "/assets/series/hospital.png",
+    "description": "Solve puzzles in a medical environment with doctors, nurses, and patients.",
+    "unlocked": true
+  },
+  {
+    "id": 2,
+    "title": "Prison",
+    "image": "/assets/series/prison.png",
+    "description": "Navigate through security puzzles in a maximum security facility.",
+    "unlocked": true
+  },
+  {
+    "id": 3,
+    "title": "School",
+    "image": "/assets/series/school.png",
+    "description": "Solve educational puzzles in a classroom environment.",
+    "unlocked": false
+  },
+  {
+    "id": 4,
+    "title": "Garden",
+    "image": "/assets/series/garden.png",
+    "description": "Solve nature-themed puzzles in a botanical environment.",
+    "unlocked": false
+  },
+  {
+    "id": 5,
+    "title": "Office",
+    "image": "/assets/series/office.png",
+    "description": "Solve corporate puzzles in a business environment.",
+    "unlocked": false
+  },
+  {
+    "id": 6,
+    "title": "Bank",
+    "image": "/assets/series/bank.png",
+    "description": "Solve financial puzzles in a secure banking environment.",
+    "unlocked": false
+  }
+]

@@ -1,4 +1,41 @@
-/* Header Styles */
+/* RTL Support */
+.rtl {
+    direction: rtl;
+}
+
+.rtl .option-label {
+    flex-direction: row-reverse;
+}
+
+.rtl .settings-option {
+    flex-direction: row-reverse;
+}
+
+.rtl .language-dropdown {
+    text-align: right;
+    padding-right: 15px;
+    padding-left: 35px;
+}
+
+.rtl .dropdown-arrow {
+    right: auto;
+    left: 12px;
+}
+
+.rtl .word-finder-header-left {
+    flex-direction: row-reverse;
+}
+
+.rtl .word-finder-coin-container {
+    flex-direction: row-reverse;
+}
+
+/* Language dropdown in RTL */
+.rtl .language-dropdown option {
+    direction: rtl;
+    text-align: right;
+}
+
 .word-finder-header {
     position: fixed;
     top: 1%;
@@ -213,55 +250,178 @@
     animation: drawPath 0.8s ease-out forwards;
 }
 
-/* Footer Controls */
+/* ==================== */
+/* ENHANCED FOOTER STYLES */
+/* ==================== */
 .word-finder-footer {
     z-index: 1000;
+    padding-bottom: 20px;
+    width: 100%;
 }
 
 .word-finder-footer-icons-container {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 30px;
     padding: 0 15px;
     width: 100%;
 }
 
 .word-finder-footer-item {
-    position: relative; /* Essential for absolute positioning of badge */
-    width: 45px;
-    height: 45px;
+    position: relative;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     background: linear-gradient(145deg, #5e72e4, #825ee4);
-    box-shadow: 1px 4px 0 rgba(0, 0, 71, 0.8);
+    box-shadow:
+            0 4px 0 rgba(0, 0, 71, 0.8),
+            0 6px 12px rgba(0, 0, 0, 0.15);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transform-style: preserve-3d;
+    perspective: 500px;
 }
+
+.word-finder-footer-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.2),
+            rgba(255, 255, 255, 0)
+    );
+    pointer-events: none;
+}
+
+.word-finder-footer-item:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow:
+            0 5px 0 rgba(0, 0, 71, 0.8),
+            0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.word-finder-footer-item:active {
+    transform: translateY(2px) scale(0.98);
+    box-shadow:
+            0 2px 0 rgba(0, 0, 71, 0.8),
+            0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.word-finder-footer-item.disabled {
+    filter: grayscale(0.8);
+    opacity: 0.7;
+    cursor: not-allowed;
+    box-shadow: 0 2px 0 rgba(0, 0, 71, 0.5);
+}
+
+.word-finder-footer-item.disabled:hover {
+    transform: none;
+    box-shadow: 0 2px 0 rgba(0, 0, 71, 0.5);
+}
+
 .tries-badge {
     position: absolute;
     bottom: -5px;
     right: -5px;
-    width: 20px;
-    height: 20px;
-    background: #ff6b6b;
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(145deg, #ff6b6b, #ff4757);
     color: white;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: bold;
     border: 2px solid white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 10; /* Ensure it appears above everything */
+    z-index: 10;
+    transform: translateZ(10px);
+    transition: all 0.2s ease;
+}
+
+.word-finder-footer-item:hover .tries-badge {
+    transform: translateZ(10px) scale(1.1);
 }
 
 .word-finder-footer-icon {
     width: 60%;
     height: 60%;
     border-radius: 50%;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+}
+
+.word-finder-footer-item:hover .word-finder-footer-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* Pulse animation for items with available tries */
+.word-finder-footer-item.has-tries {
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow:
+                0 4px 0 rgba(0, 0, 71, 0.8),
+                0 6px 12px rgba(0, 0, 0, 0.15),
+                0 0 0 0 rgba(94, 114, 228, 0.7);
+    }
+    70% {
+        box-shadow:
+                0 4px 0 rgba(0, 0, 71, 0.8),
+                0 6px 12px rgba(0, 0, 0, 0.15),
+                0 0 0 12px rgba(94, 114, 228, 0);
+    }
+    100% {
+        box-shadow:
+                0 4px 0 rgba(0, 0, 71, 0.8),
+                0 6px 12px rgba(0, 0, 0, 0.15),
+                0 0 0 0 rgba(94, 114, 228, 0);
+    }
+}
+
+/* Click animation */
+@keyframes buttonClick {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.button-click {
+    animation: buttonClick 0.3s ease;
+}
+
+/* Success flash */
+@keyframes successFlash {
+    0% {
+        background: linear-gradient(145deg, #5e72e4, #825ee4);
+    }
+    50% {
+        background: linear-gradient(145deg, #2ecc71, #27ae60);
+    }
+    100% {
+        background: linear-gradient(145deg, #5e72e4, #825ee4);
+    }
+}
+
+.success-flash {
+    animation: successFlash 0.5s ease;
 }
 
 /* Animation Styles */
@@ -314,70 +474,6 @@
 
 .cell-letter-remove {
     animation: letterRemove 0.8s ease-out forwards;
-}
-
-/* Ad Popup */
-.ad-popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 3000;
-}
-
-.ad-popup {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-    text-align: center;
-    max-width: 300px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-}
-
-.ad-popup h3 {
-    margin-top: 0;
-    color: #2c3e50;
-}
-
-.ad-popup p {
-    margin-bottom: 25px;
-    color: #4a5568;
-}
-
-.ad-popup-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-}
-
-.ad-popup-button {
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s ease;
-}
-
-.ad-popup-button.cancel {
-    background: #e2e8f0;
-    color: #4a5568;
-}
-
-.ad-popup-button.confirm {
-    background: linear-gradient(145deg, #ff9a3d, #ff6b6b);
-    color: white;
-    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
-}
-
-.ad-popup-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Keyframe Animations */

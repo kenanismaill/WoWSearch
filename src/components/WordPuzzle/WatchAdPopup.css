@@ -1,0 +1,191 @@
+/* WatchAdPopup.css */
+.coin-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    opacity: 0;
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+.coin-popup-content {
+    position: relative;
+    background: rgba(255, 250, 232, 0.95);
+    border-bottom: 5px solid #ff9a3d;
+    padding: 25px;
+    border-radius: 22px;
+    text-align: center;
+    box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.2),
+            0 0 15px rgba(255, 154, 61, 0.3);
+    width: 280px;
+    transform: scale(0.95);
+    animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes scaleIn {
+    to { transform: scale(1); }
+}
+
+.coin-popup-header {
+    margin-bottom: 18px;
+    padding-top: 10px;
+}
+
+.coin-popup-header h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.popup-text {
+    font-size: 1rem;
+    color: #4a5568;
+    line-height: 1.5;
+    padding: 0 10px;
+}
+
+.coin-animation {
+    margin: 20px auto;
+    perspective: 800px;
+}
+
+.coin-3d {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    animation:
+            rotate 8s infinite linear,
+            glow 3s infinite ease-in-out alternate;
+    transform-style: preserve-3d;
+}
+
+.coin-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255, 154, 61, 0.4));
+}
+
+.coin-count {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: white;
+    text-shadow:
+            0 0 8px rgba(0, 0, 0, 0.8),
+            0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes rotate {
+    to { transform: rotateY(360deg); }
+}
+
+@keyframes glow {
+    to { filter: brightness(1.2); }
+}
+
+.coin-popup-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 20px;
+}
+
+.icon-button {
+    width: 75px;
+    height: 75px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 0 #ff4b2b;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.icon-button img {
+    width: 95%;
+    height: 95%;
+    object-fit: fill;
+}
+
+.icon-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(70%);
+}
+
+.icon-button:not(:disabled):hover {
+    transform: translateY(-4px);
+    /*box-shadow: 0 6px 0 rgba(0, 0, 71, 0.8);*/
+}
+
+.icon-button:not(:disabled):active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 rgba(0, 0, 71, 0.8);
+    transition: all 0.1s ease;
+}
+
+.watch-ad-button {
+    background: transparent;
+}
+
+.use-coins-button {
+    background: transparent;
+}
+
+.badge-use-coins {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background: linear-gradient(145deg, #ff5e00, #ff1e00);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 18px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 45px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+    padding: 12px 35px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    background: linear-gradient(145deg, #ff416c, #ff4b2b);
+    color: white;
+    box-shadow: 0 4px 0 #cc2a24;
+    transition: all 0.3s ease;
+}
+
+.close-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 0 #cc2a24;
+}
+
+.close-button:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #cc2a24;
+}

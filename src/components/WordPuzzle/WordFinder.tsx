@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import wordsData from './wordsFinder-ar.json';
+import { useTranslation } from 'react-i18next';
+import wordsDataEn from './wordsFinder-en.json';
+import wordsDataAr from './wordsFinder-ar.json';
 import './WordFinder.css';
 import Lottie from "react-lottie-player";
 import celebrationLottie from "../../../public/lotties/confetti-lottie.json";
@@ -8,6 +10,7 @@ import Header from "../Header";
 import Footer from "./Footer";
 import WatchAdPopup from "./WatchAdPopup";
 
+// Type definitions
 type TriesState = {
     revealFirst: number;
     removeLetters: number;
@@ -38,20 +41,31 @@ interface FirstLetterCell {
     color: string;
 }
 
+interface AppSettings {
+    isMusicEnabled: boolean;
+    isSoundEnabled: boolean;
+    language: string;
+}
+
 const colors = [
-    '#570505',
-    '#03872d',
-    '#6c058e',
-    '#92059e',
-    '#03066c',
-    '#9f5102',
-    '#770703'
+    '#00cf07',
+    '#8137ff',
+    '#a904e1',
+    '#0085ff',
+    '#0005ea',
+    '#e47300',
+    '#cf0500'
 ];
 
+const englishLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const arabicLetters = 'ابتثجحخدذرزسشصضطظعغفقكلمنهوي';
+
 const WordFinder: React.FC = () => {
+    const { t, i18n } = useTranslation();
+
     // State management
     const [currentCategoryIndex, setCurrentCategoryIndex] = useState(() => {
-        const savedIndex = localStorage.getItem('wordFinderCategoryIndex');
+        const savedIndex = localStorage.getItem(`wordFinderCategoryIndex_${i18n.language}`);
         return savedIndex ? parseInt(savedIndex) : 0;
     });
     const [grid, setGrid] = useState<GridCell[][]>([]);
@@ -66,6 +80,27 @@ const WordFinder: React.FC = () => {
     const [revealedWord, setRevealedWord] = useState<string | null>(null);
     const [showAdPopup, setShowAdPopup] = useState(false);
     const [currentAction, setCurrentAction] = useState<string | null>(null);
+    const [settings, setSettings] = useState<AppSettings>(() => {
+        const savedSettings = localStorage.getItem('wordFinderSettings');
+        const defaultSettings = {
+            isMusicEnabled: true,
+            isSoundEnabled: true,
+            language: 'en' // Default to English
+        };
+        return savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+    });
+    useEffect(() => {
+        if (!settings?.language) return;
+
+        i18n.changeLanguage(settings.language).catch(() => {
+            i18n.changeLanguage('en'); // Fallback to English if error occurs
+        });
+
+        const savedIndex = localStorage.getItem(`wordFinderCategoryIndex_${settings.language}`);
+        setCurrentCategoryIndex(savedIndex ? parseInt(savedIndex) : 0);
+    }, [settings?.language, i18n]);
+    const wordsData = settings.language === 'ar' ? wordsDataAr : wordsDataEn;
+    const currentLetters = settings.language === 'ar' ? arabicLetters : englishLetters;
 
     const gridRef = useRef<HTMLDivElement>(null);
     const pathRef = useRef<SVGSVGElement>(null);
@@ -78,7 +113,17 @@ const WordFinder: React.FC = () => {
             ? JSON.parse(savedTries)
             : { revealFirst: 2, removeLetters: 2, revealWord: 2 };
     });
+    // Play sound effects based on settings
+    const playSound = (soundFunction: () => void) => {
+        if (settings.isSoundEnabled) {
+            soundFunction();
+        }
+    };
 
+    // Persist settings to localStorage
+    useEffect(() => {
+        localStorage.setItem('wordFinderSettings', JSON.stringify(settings));
+    }, [settings]);
     // Memoized values
     const colorMap = useMemo(() => {
         const map = new Map<string, string>();
@@ -94,7 +139,7 @@ const WordFinder: React.FC = () => {
     }, [tries]);
 
     useEffect(() => {
-        localStorage.setItem('wordFinderCategoryIndex', currentCategoryIndex.toString());
+        localStorage.setItem(`wordFinderCategoryIndex_${settings.language}`, currentCategoryIndex.toString());
     }, [currentCategoryIndex]);
 
     // Calculate grid size based on current category
@@ -357,11 +402,9 @@ const WordFinder: React.FC = () => {
                 }
             }
         }
-
-        const arabicLetters = 'ابتثجحخدذرزسشصضطظعغفقكلمنهوي';
         newGrid.forEach(row => row.forEach(cell => {
             if (!cell.letter) {
-                cell.letter = arabicLetters[Math.floor(Math.random() * arabicLetters.length)];
+                cell.letter = currentLetters[Math.floor(Math.random() * currentLetters.length)];
             }
         }));
 
@@ -405,7 +448,7 @@ const WordFinder: React.FC = () => {
                 pathCells.push(grid[y][x]);
             }
             setSelectedLetters(pathCells);
-            popSound();
+            playSound(popSound);
         }
     }, [grid, gridSize, selectedLetters]);
 
@@ -415,7 +458,7 @@ const WordFinder: React.FC = () => {
         const color = colorMap.get(word);
 
         if (color && currentCategory.includes(word) && !foundWords.some(w => w.word === word)) {
-            foundAudio();
+            playSound(foundAudio);
             const newFoundWords = [...foundWords, { word, color }];
             setFoundWords(newFoundWords);
             setCompletedPaths(prev => [...prev, { path, color }]);
@@ -434,7 +477,7 @@ const WordFinder: React.FC = () => {
                 setTransitioning(true);
                 setCelebrateCategory(true);
                 setTimeout(() => {
-                    newCategorySound();
+                    playSound(newCategorySound);
                     setCurrentCategoryIndex(prev => prev < wordsData.categories.length - 1 ? prev + 1 : 0);
                     setFoundWords([]);
                     setCompletedPaths([]);
@@ -523,7 +566,7 @@ const WordFinder: React.FC = () => {
         }));
 
         setFirstLetterCells(cells);
-        bubbleSound();
+        playSound(bubbleSound);
     }, [colorMap, currentCategory, grid, gridSize]);
 
     const removeUnusedLetters = useCallback(() => {
@@ -544,7 +587,7 @@ const WordFinder: React.FC = () => {
                     animate: ''
                 }))
             ));
-            bubbleSound();
+            playSound(bubbleSound);
         }, 1500);
     }, [currentCategory]);
 
@@ -558,11 +601,10 @@ const WordFinder: React.FC = () => {
         setTimeout(() => {
             setMaskedWords(prev => prev.filter(word => word !== wordToReveal));
             setRevealedWord(null);
-            newCategorySound();
+            playSound(newCategorySound);
         }, 800);
     }, [maskedWords]);
 
-    // Ad handlers
     const handleWatchAdRequest = useCallback((action: string) => {
         setCurrentAction(action);
         setShowAdPopup(true);
@@ -571,7 +613,6 @@ const WordFinder: React.FC = () => {
     const handleConfirmAd = useCallback(() => {
         if (currentAction) {
             setTries(prev => {
-                // Type guard to ensure currentAction is a valid key
                 const validKeys: (keyof TriesState)[] = ['revealFirst', 'removeLetters', 'revealWord'];
                 if (validKeys.includes(currentAction as keyof TriesState)) {
                     return {
@@ -585,13 +626,32 @@ const WordFinder: React.FC = () => {
         setShowAdPopup(false);
     }, [currentAction]);
 
+    const handleUseCoins = () => {
+        console.log("use coins");
+        playSound(popSound);
+    };
+
+    const showRewardAd = () => {
+        console.log("show reward ad");
+        playSound(popSound);
+    };
+
+    // Update settings from Header
+    const handleSettingsChange = (newSettings: Partial<AppSettings>) => {
+        setSettings(prev => ({
+            ...prev,
+            ...newSettings
+        }));
+    };
+
     return (
         <div className="word-finder-container">
             <Header
                 level={currentCategoryIndex + 1}
                 coins={60}
+                onSettingsChange={handleSettingsChange}
+                settings={settings}
             />
-
             {celebrateCategory && (
                 <div className="celebration-container">
                     <Lottie
@@ -636,7 +696,7 @@ const WordFinder: React.FC = () => {
                     {selectedLetters.length > 0 ? (
                         selectedLetters.map((cell, i) => <span key={i}>{cell.letter}</span>)
                     ) : (
-                        <span style={{ opacity: 0.7 }}>ابحث عن كلمة</span>
+                        <span style={{ opacity: 0.7 }}>{t('findWordPrompt')}</span>
                     )}
                 </div>
 
@@ -693,7 +753,9 @@ const WordFinder: React.FC = () => {
                 {showAdPopup && (
                     <WatchAdPopup
                         onClose={() => setShowAdPopup(false)}
-                        onConfirm={handleConfirmAd}
+                        onUseCoins={handleUseCoins}
+                        coins={500}
+                        onWatchAd={showRewardAd}
                     />
                 )}
 
@@ -738,7 +800,7 @@ const WordFinder: React.FC = () => {
                         <span
                             key={i}
                             className="word-reveal-letter"
-                            style={{ animationDelay: `${i * 0.1}s` }}
+                            style={{ animationDelay: `${i * 0.4}s` }}
                         >
               {letter}
             </span>

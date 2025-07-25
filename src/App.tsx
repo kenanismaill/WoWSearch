@@ -7,6 +7,9 @@ import {IonReactRouter} from "@ionic/react-router";
 import {StatusBar} from "@capacitor/status-bar";
 import DailyGiftPopup from "./components/WordPuzzle/DailyGiftPopup";
 import CurrentLevelPage from "./components/WordPuzzle/CurrentLevelPage";
+import './i18n';
+import VisualPuzzle from "./components/Visiual/VisualPuzzle";
+import VisualSeries from "./components/Visiual/VisualSeries";
 
 const App: React.FC = () => {
     useEffect(() => {const hideStatusBar = async () => {
@@ -24,11 +27,13 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonRouterOutlet>
             <Switch>
-              <Route exact path="/" component={WordFinderLevel} />
+              <Route exact path="/" component={VisualSeries} />
               <Route path="/word-finder" component={WordFinder} />
               <Route path="/word-finder-level" component={WordFinderLevel} />
               <Route path="/wf-daily-gift" component={DailyGiftPopup} />
               <Route path="/wf-current-level" component={CurrentLevelPage} />
+              <Route path="/puzzle/:seriesId" component={VisualPuzzle} />
+              <Route path="/series" component={VisualSeries} />
               <Redirect to="/" />
             </Switch>
           </IonRouterOutlet>

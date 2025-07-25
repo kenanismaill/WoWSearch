@@ -1,30 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './WatchAdPopup.css';
 
 interface WatchAdPopupProps {
+    coins: number;
+    onUseCoins: () => void;
+    onWatchAd: () => void;
     onClose: () => void;
-    onConfirm: () => void;
 }
 
-const WatchAdPopup: React.FC<WatchAdPopupProps> = ({ onClose, onConfirm }) => {
+const WatchAdPopup: React.FC<WatchAdPopupProps> = ({ coins, onUseCoins, onWatchAd, onClose }) => {
+    const [isRewardedClicked, setIsRewardedClicked] = useState(false);
+
+    const handleWatchAdClick = () => {
+        setIsRewardedClicked(true);
+        onWatchAd();
+    };
+
     return (
-        <div className="ad-popup-overlay">
-            <div className="ad-popup">
-                <h3>Out of Attempts!</h3>
-                <p>Watch a short ad to get more attempts?</p>
-                <div className="ad-popup-buttons">
+        <div className="coin-popup">
+            <div className="coin-popup-content">
+                <div className="coin-popup-header">
+                    {/*<p className="popup-text">*/}
+                    {/*    اختر بين استخدام الرصيد الحالي أو مشاهدة فيديو*/}
+                    {/*    لفتح تحدي جديد*/}
+                    {/*</p>*/}
+                </div>
+                <div className="coin-animation">
+                    <div className="coin-3d">
+                        <img
+                            src="/assets/wordFinder/coins.gif"
+                            alt="Coin"
+                            className="coin-image"
+                        />
+                    </div>
+                </div>
+                <div className="coin-popup-buttons">
                     <button
-                        className="ad-popup-button cancel"
-                        onClick={onClose}
+                        className="use-coins-button icon-button"
+                        onClick={onUseCoins}
+                        disabled={coins < 500}
                     >
-                        Cancel
+                        <div className={'badge-use-coins'}>500</div>
+                        <img
+                            src="/assets/wordFinder/coin.png"
+                            alt="Coins"
+                            className="button-coin-icon"
+                        />
                     </button>
                     <button
-                        className="ad-popup-button confirm"
-                        onClick={onConfirm}
+                        className="watch-ad-button icon-button"
+                        onClick={handleWatchAdClick}
+                        disabled={isRewardedClicked}
                     >
-                        Watch Ad
+                        <div className={'badge-use-coins'}>مجاني</div>
+                        <img
+                            src="/assets/wordFinder/free-ad.png"
+                            alt="Play"
+                            className="button-play-icon"
+                        />
                     </button>
                 </div>
+                <button className="close-button" onClick={onClose}>
+                    إغلاق
+                </button>
             </div>
         </div>
     );
